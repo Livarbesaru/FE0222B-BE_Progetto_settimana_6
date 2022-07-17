@@ -1,0 +1,55 @@
+Creare un’applicazione Web che simula uno sportello di un bancomat in cui 
+è possibile richiedere il saldo del proprio conto, prelevare e versare denaro contante.
+
+L’applicazione avrà accesso al DB bancadb con una tabella contocorrente 
+e relativi campi (numero, intestatario,saldo). Crearlo ed inserire alcuni record.
+
+=====================================Interfaccia utente=====================================
+
+L’interfaccia dovrà essere simile a questa (se vuoi renderlo più complesso 
+puoi anche aggiungere il PIN):
+
+dove sarà presente un menu a tendina in cui è possibile richiedere 
+una delle 3 operazioni sopra descritte.
+
+L’operazione di saldo informa semplicemente l’utente del saldo del proprio conto.
+
+L’operazione di prelievo permette di prelevare denaro 
+(riduce dunque il saldo della quantità prelevata)
+
+L’operazione di versamento permette di versare denaro 
+(aumenta il saldo della quantità versata)
+
+==========================Servlet==============================================
+
+La richiesta della form sarà inviata ad una servlet che demanderà ad un 
+EJB il controllo dei dati attraverso un metodo specifico:
+
+public boolean controllaOperazione(String operazione, int numero, float quantita)
+
+Tale metodo tornerà false se i dati sono errati (ad esempio se la quantità è negativa, 
+se il numero del conto non esiste o se la quantità da prelevare supera il saldo). 
+Per semplicità puoi effettuare solo i controlli principali.
+
+Se tale metodo torna true, sarà possibile domandare all’ejb 
+la realizzazione delle operazioni attraverso opportuni metodi:
+
+=========================Ejb/DAO===============================================
+
+public ContoCorrente getContoCorrente(int numero)
+
+che richiama l’omonimo metodo nel DAO che estrae i dati dal 
+DB e restituisce un oggetto ContoCorrente
+
+public boolean versa(int numero, float quantita)
+
+public boolean preleva(int numero, float quantita)
+
+che richiamano gli omonimi metodi nel DAO per effettuare le 
+operazioni di versamento e prelievo nel DB
+
+La classe ContoCorrenteDAO, dunque, avrà i metodi sopra descritti più il metodo
+
+public boolean esiste(int numero)
+
+che controlla se il contoCorrente specifico esista o meno.

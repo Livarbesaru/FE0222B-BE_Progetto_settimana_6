@@ -1,0 +1,12 @@
+create TABLE ContoCorrente(numero serial primary key unique not null,
+                        intestatario varchar(50) not null,
+                        saldo numeric(256) not null,
+                        pin int not null);
+                        
+Alter table ContoCorrente ADD constraint limitPin Check(pin<99999);               
+                        
+Insert into ContoCorrente(intestatario,saldo,pin)
+    values('Marco Rossi',12300,12345),
+    ('Roberto Bianchi',86940,54321),
+    ('Riccardo Verdi',24378,35421),
+    ('Giacomo Rossi',53432,33221);
